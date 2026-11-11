@@ -1,0 +1,23 @@
+name: Demo Build Artifact
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-and-upload:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Write build artifact file
+        run: |
+          mkdir -p build
+          echo "demo-build" > build/artifact.txt
+          echo "generated-at: $(date -u +%Y-%m-%dT%H:%M:%SZ)" >> build/artifact.txt
+          echo "workflow: Demo Build Artifact"
+          echo "run id: ${GITHUB_RUN_ID}"
+          cat build/artifact.txt
+      - name: Upload demo-build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: demo-build
+          path: build/artifact.txt
+          retention-days: 1
